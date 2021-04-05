@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 
 const connection = require('../../database/connection')
@@ -7,7 +6,7 @@ const connection = require('../../database/connection')
 class UserController {
   async register (request, response) {
     try {
-      const { name, email, password } = request.body
+      const { name, email, username, password } = request.body
 
       // Verify if e-mail is already registered
       const existsEmail = await connection
@@ -20,26 +19,30 @@ class UserController {
         return response.status(400).send({ message: 'E-mail is already registered.' })
       }
 
+      const existsUsername = await connection
+        .select('id', 'name', 'email')
+        .where('username', username)
+        .from('users')
+        .first()
+
+      if (existsUsername) {
+        return response.status(400).send({ message: 'Username is already registered.' })
+      }
+
       // Hashing password
       const hashPassword = await bcrypt.hash(password, 10)
 
-      const role = await connection
-        .select('id')
-        .where('name', 'user')
-        .from('roles')
-        .first()
-
-      const user = await connection
-        .returning(['id', 'name', 'email'])
+      const user = await connection('users')
         .insert({
           name,
           email,
+          username,
           password: hashPassword,
-          role_id: role.id
-        })
-        .into('users')
+          role: 'basic'
+        }, ['id', 'name', 'email', 'username'])
 
-      return response.status(201).send(user[0])
+
+      return response.status(200).send(user[0])
     } catch (error) {
       return response.status(500).send({ message: 'Error' })
     }

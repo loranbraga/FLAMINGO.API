@@ -7,7 +7,7 @@ class App {
   constructor() {
     this.express = express()
     this.middlewares()
-    this.database()
+    // this.database()
     this.routes()
   }
 
