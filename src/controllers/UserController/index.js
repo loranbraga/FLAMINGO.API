@@ -16,7 +16,7 @@ class UserController {
         .first()
 
       if (existsEmail) {
-        return response.status(400).send({ message: 'E-mail is already registered.' })
+        return response.status(400).send({ message: 'E-mail já cadastrado.' })
       }
 
       const existsUsername = await connection
@@ -26,7 +26,7 @@ class UserController {
         .first()
 
       if (existsUsername) {
-        return response.status(400).send({ message: 'Username is already registered.' })
+        return response.status(400).send({ message: 'Username não esta disponivel.' })
       }
 
       // Hashing password
@@ -44,7 +44,7 @@ class UserController {
 
       return response.status(200).send(user[0])
     } catch (error) {
-      return response.status(500).send({ message: 'Error' })
+      return response.status(500).send({ message: error.message })
     }
   }
 
@@ -53,7 +53,7 @@ class UserController {
       const { email, password } = request.body
 
       const user = await connection
-        .select(['id', 'password'])
+        .select(['id', 'email', 'username', 'password', 'role'])
         .where('email', email)
         .from('users')
         .first()
@@ -72,9 +72,25 @@ class UserController {
       }
 
       // Generate JWT Token and return
-      const token = await jwt.sign({ userId: user.id }, process.env.JWT_SECRET)
+      const token = await jwt.sign(user, process.env.JWT_SECRET)
 
       return response.status(201).send({ token: token })
+    } catch (error) {
+      return response.status(500).send({ message: 'Error' })
+    }
+  }
+
+  async getUser (request, response) {
+    try {
+      const { id } = request.params
+
+      const user = await connection
+        .select(['id', 'email', 'username', 'role'])
+        .where('id', id)
+        .from('users')
+        .first()
+
+      return response.status(200).send(user)
     } catch (error) {
       return response.status(500).send({ message: 'Error' })
     }

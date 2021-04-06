@@ -16,4 +16,8 @@ routes.post('/authenticate', function (request, response) {
 // Protected Routes
 routes.use(auth)
 
+routes.get('/user/:id', function (request, response) {
+  return UserController.getUser(request, response)
+})
+
 module.exports = routes
