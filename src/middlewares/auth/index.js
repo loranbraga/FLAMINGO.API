@@ -16,7 +16,7 @@ async function auth(request, response, next) {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    request.userId = decoded.userId
+    request.auth = decoded
 
     return next()
   } catch (error) {
