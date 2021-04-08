@@ -19,7 +19,7 @@ routes.post('/authenticate', function (request, response) {
 })
 
 // Protected Routes
-routes.use(auth)
+// routes.use(auth)
 
 routes.get('/posts', function (request, response) {
   return PostController.getAll(request, response)
