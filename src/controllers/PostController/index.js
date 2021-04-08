@@ -23,6 +23,20 @@ class PostController {
     }
   }
 
+  async delete (request, response) {
+    try {
+      const { post_id } = request.params
+
+      await connection('posts')
+        .where('id', post_id)
+        .del()
+
+      return response.status(200).send()
+    } catch (error) {
+      return response.status(500).send({ message: error.message })
+    }
+  }
+
   async like (request, response) {
     try {
       const { post_id } = request.params
