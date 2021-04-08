@@ -10,6 +10,10 @@ routes.post('/register', function (request, response) {
   return UserController.register(request, response)
 })
 
+routes.post('/teste', function (request, response) {
+  return response.status(200).send({teste: true})
+})
+
 routes.post('/authenticate', function (request, response) {
   return UserController.authenticate(request, response)
 })
