@@ -10,7 +10,7 @@ routes.post('/register', function (request, response) {
   return UserController.register(request, response)
 })
 
-routes.post('/teste', function (request, response) {
+routes.get('/teste', function (request, response) {
   return response.status(200).send({teste: true})
 })
 
@@ -19,7 +19,7 @@ routes.post('/authenticate', function (request, response) {
 })
 
 // Protected Routes
-// routes.use(auth)
+routes.use(auth)
 
 routes.get('/posts', function (request, response) {
   return PostController.getAll(request, response)
