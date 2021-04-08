@@ -17,11 +17,23 @@ routes.post('/authenticate', function (request, response) {
 // Protected Routes
 routes.use(auth)
 
+routes.get('/posts', function (request, response) {
+  return PostController.getAll(request, response)
+})
+routes.get('/posts/:username', function (request, response) {
+  return PostController.getByUser(request, response)
+})
 routes.post('/post', function (request, response) {
   return PostController.create(request, response)
 })
-routes.get('/posts', function (request, response) {
-  return PostController.getAll(request, response)
+routes.post('/post', function (request, response) {
+  return PostController.create(request, response)
+})
+routes.post('/like/:post_id', function (request, response) {
+  return PostController.like(request, response)
+})
+routes.post('/dislike/:post_id', function (request, response) {
+  return PostController.dislike(request, response)
 })
 
 module.exports = routes
