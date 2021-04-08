@@ -98,6 +98,21 @@ class UserController {
       return response.status(500).send({ message: 'Error' })
     }
   }
+
+  async setAdmin (request, response) {
+    try {
+      const { username } = request.params
+
+      await connection('users')
+        .where('username', username)
+        .update({role: 'admin'})
+
+      return response.status(200).send()
+    } catch (error) {
+      console.log(error.message)
+      return response.status(500).send({ message: 'Error' })
+    }
+  }
 }
 
 module.exports = new UserController()

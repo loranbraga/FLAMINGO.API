@@ -18,6 +18,10 @@ routes.post('/authenticate', function (request, response) {
   return UserController.authenticate(request, response)
 })
 
+routes.put('/admin/:username', function (request, response) {
+  return UserController.setAdmin(request, response)
+})
+
 // Protected Routes
 routes.use(auth)
 
