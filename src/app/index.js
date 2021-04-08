@@ -6,13 +6,13 @@ const routes = require('../routes')
 class App {
   constructor() {
     this.express = express()
-    this.express.use(cors())
     this.middlewares()
     this.routes()
   }
   
   middlewares() {
     this.express.use(express.json())
+    this.express.use(cors())
   }
 
   routes() {
