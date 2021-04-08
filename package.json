@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start:dev": "NODE_ENV=test nodemon src/server",
+    "start": "node src/server",
     "migration:make": "NODE_ENV=test knex --knexfile src/database/knexfile.js migrate:make",
     "migration:latest": "NODE_ENV=test knex --knexfile src/database/knexfile.js migrate:latest",
     "migration:rollback": "NODE_ENV=test knex --knexfile src/database/knexfile.js migrate:rollback",
