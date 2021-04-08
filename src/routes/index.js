@@ -10,8 +10,8 @@ routes.post('/register', function (request, response) {
   return UserController.register(request, response)
 })
 
-routes.get('/teste', function (request, response) {
-  return response.status(200).send({teste: true})
+routes.get('/test', function (request, response) {
+  return response.status(200).send({test: true})
 })
 
 routes.post('/authenticate', function (request, response) {
@@ -32,6 +32,9 @@ routes.post('/post', function (request, response) {
 })
 routes.post('/post', function (request, response) {
   return PostController.create(request, response)
+})
+routes.delete('/post/:post_id', function (request, response) {
+  return PostController.delete(request, response)
 })
 routes.post('/like/:post_id', function (request, response) {
   return PostController.like(request, response)
