@@ -7,13 +7,12 @@ class App {
   constructor() {
     this.express = express()
     this.middlewares()
-    // this.database()
     this.routes()
+    this.express.use(cors())
   }
 
   middlewares() {
     this.express.use(express.json())
-    this.express.use(cors())
   }
 
   routes() {
