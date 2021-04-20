@@ -6,7 +6,7 @@ const auth = require('../middlewares/auth')
 
 const routes = express.Router()
 
-routes.post('/register', function (request, response) {
+routes.post('/user', function (request, response) {
   return UserController.register(request, response)
 })
 
@@ -14,7 +14,7 @@ routes.get('/test', function (request, response) {
   return response.status(200).send({test: true})
 })
 
-routes.post('/authenticate', function (request, response) {
+routes.post('/session', function (request, response) {
   return UserController.authenticate(request, response)
 })
 

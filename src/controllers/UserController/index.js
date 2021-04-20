@@ -62,6 +62,7 @@ class UserController {
       if (!user) {
         return response.status(404).send({ message: 'Email ou senha incorretos.' })
       }
+      console.log(user)
 
       // Authenticate user password
       const isValidPassword = await bcrypt.compare(password, user.password)
