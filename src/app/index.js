@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 
 const routes = require('../routes')
 
@@ -13,6 +14,10 @@ class App {
   middlewares() {
     this.express.use(express.json())
     this.express.use(cors())
+    this.express.use(
+      "/files",
+      express.static(path.resolve(__dirname, "..", "tmp", "uploads"))
+    );
   }
 
   routes() {

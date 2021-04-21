@@ -1,9 +1,14 @@
 const express = require('express')
+const jwt = require('express-jwt')
+const path =  require('path')
+
+const multer = require("multer")
+const multerConfig = require("../config/multer")
 
 const UserController = require('../controllers/UserController')
 const PostController = require('../controllers/PostController')
-const jwt = require('express-jwt');
-const path =  require('path')
+
+const upload = multer(multerConfig)
 
 
 const routes = express.Router()
@@ -14,7 +19,7 @@ require('dotenv').config({
     : path.join(__dirname, '../../.env')
 })
 
-routes.post('/user', function (request, response) {
+routes.post('/user', upload.single("file") ,function (request, response) {
   return UserController.register(request, response)
 })
 

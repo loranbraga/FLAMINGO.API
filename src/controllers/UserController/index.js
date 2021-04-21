@@ -7,6 +7,7 @@ class UserController {
   async register (request, response) {
     try {
       const { name, email, username, password } = request.body
+      console.log(request)
 
       // Verify if e-mail is already registered
       const existsEmail = await connection
@@ -38,6 +39,7 @@ class UserController {
           email,
           username,
           password: hashPassword,
+          profile_url: request.file ? request.file.filename: null ,
           role: 'basic'
         }, ['id', 'name', 'email', 'username'])
 
@@ -53,7 +55,7 @@ class UserController {
       const { email, password } = request.body
 
       const user = await connection
-        .select(['id', 'email', 'username', 'name', 'password', 'role'])
+        .select(['id', 'email', 'username', 'name', 'password', 'role', 'profile_url'])
         .where('email', email)
         .from('users')
         .first()
@@ -62,7 +64,6 @@ class UserController {
       if (!user) {
         return response.status(404).send({ message: 'Email ou senha incorretos.' })
       }
-      console.log(user)
 
       // Authenticate user password
       const isValidPassword = await bcrypt.compare(password, user.password)
