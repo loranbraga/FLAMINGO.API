@@ -1,12 +1,25 @@
 const express = require('express')
+const jwt = require('express-jwt')
+const path =  require('path')
+
+const multer = require("multer")
+const multerConfig = require("../config/multer")
 
 const UserController = require('../controllers/UserController')
 const PostController = require('../controllers/PostController')
-const auth = require('../middlewares/auth')
+
+const upload = multer(multerConfig)
+
 
 const routes = express.Router()
 
-routes.post('/user', function (request, response) {
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test'
+    ? path.join(__dirname, '../../.env.test')
+    : path.join(__dirname, '../../.env')
+})
+
+routes.post('/user', upload.single("file") ,function (request, response) {
   return UserController.register(request, response)
 })
 
@@ -23,7 +36,7 @@ routes.put('/admin/:username', function (request, response) {
 })
 
 // Protected Routes
-routes.use(auth)
+routes.use(jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'], requestProperty: 'auth' }))
 
 routes.get('/posts', function (request, response) {
   return PostController.getAll(request, response)

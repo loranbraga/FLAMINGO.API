@@ -88,7 +88,7 @@ class PostController {
 
       const promises = posts.map( async (post) => {
         const user = await connection
-        .select(['id', 'email', 'username', 'name', 'role'])
+        .select(['id', 'email', 'username', 'name', 'role', 'profile_url'])
         .where('id', post.user_id)
         .from('users')
         .first()
@@ -123,7 +123,7 @@ class PostController {
       const { username } = request.params
 
       const user = await connection
-        .select(['id', 'email', 'username', 'role'])
+        .select(['id', 'email', 'username', 'role', 'profile_url'])
         .where('username', username)
         .from('users')
         .first()
@@ -139,7 +139,7 @@ class PostController {
 
       const promises = posts.map( async (post) => {
         const user = await connection
-        .select(['id', 'email', 'username', 'name', 'role'])
+        .select(['id', 'email', 'username', 'name', 'role', 'profile_url'])
         .where('id', post.user_id)
         .from('users')
         .first()
