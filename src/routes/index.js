@@ -3,13 +3,16 @@ const jwt = require('express-jwt')
 const path =  require('path')
 
 const multer = require("multer")
+const redis = require("express-redis-cache")
 const multerConfig = require("../config/multer")
+const redisConfig = require("../config/redis")
 
 const UserController = require('../controllers/UserController')
 const PostController = require('../controllers/PostController')
 
 const upload = multer(multerConfig)
 
+const cache = redis(cacheConfig)
 
 const routes = express.Router()
 
@@ -38,7 +41,7 @@ routes.put('/admin/:username', function (request, response) {
 // Protected Routes
 routes.use(jwt({ secret: process.env.JWT_SECRET, algorithms: ['HS256'], requestProperty: 'auth' }))
 
-routes.get('/posts', function (request, response) {
+routes.get('/posts', cache.route(), function (request, response) {
   return PostController.getAll(request, response)
 })
 routes.get('/posts/:username', function (request, response) {
